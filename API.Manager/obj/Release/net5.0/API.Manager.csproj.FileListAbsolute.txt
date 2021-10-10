@@ -1,0 +1,13 @@
+D:\Workspace\API.Manager\API.Manager\bin\Release\net5.0\API.Manager.deps.json
+D:\Workspace\API.Manager\API.Manager\bin\Release\net5.0\API.Manager.dll
+D:\Workspace\API.Manager\API.Manager\bin\Release\net5.0\ref\API.Manager.dll
+D:\Workspace\API.Manager\API.Manager\bin\Release\net5.0\API.Manager.pdb
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\API.Manager.Resources.Resource.resources
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\API.Manager.csproj.GenerateResource.cache
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\API.Manager.GeneratedMSBuildEditorConfig.editorconfig
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\API.Manager.AssemblyInfoInputs.cache
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\API.Manager.AssemblyInfo.cs
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\API.Manager.csproj.CoreCompileInputs.cache
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\API.Manager.dll
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\ref\API.Manager.dll
+D:\Workspace\API.Manager\API.Manager\obj\Release\net5.0\API.Manager.pdb

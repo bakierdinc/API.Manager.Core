@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>Baki Erdinç</Authors>
+    <Company>BEE</Company>
+    <Description>API.Manager for manage availability of REST services.</Description>
+    <PackageProjectUrl>https://github.com/bakierdinc/API.Manager</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bakierdinc/API.Manager</RepositoryUrl>
+    <PackageTags>API.Manager for manage availability of REST services.</PackageTags>
+    <PackageReleaseNotes>API.Manager for manage availability of REST services.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
