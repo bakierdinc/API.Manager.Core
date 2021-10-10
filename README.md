@@ -4,9 +4,9 @@
 
 ## Implementation
 
-Firstly you should add ApiManagerOptions to configuration file.
+**Firstly you should add ApiManagerOptions to configuration file.**
 
-**Example**
+**Example**<br>
 ![options](https://user-images.githubusercontent.com/55300546/136687127-33800fc4-1313-4907-9501-36c0e7a8b5d0.PNG)
 
 **ApiManagerOptions fields meaning;**
@@ -19,9 +19,9 @@ Firstly you should add ApiManagerOptions to configuration file.
 - NotAcceptableMessage : If services are not available, 406 status code is returned and indicates the content message.
 
 
-Secondly you should add to Service Collection
+**Secondly you should add to Service Collection**
 
-**Example**
+**Example**<br>
 ![ServiceCollection](https://user-images.githubusercontent.com/55300546/136687172-386f7e31-6443-4ad5-8609-a9164832cea9.PNG)
 
 Done...
