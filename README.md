@@ -25,7 +25,7 @@
 ![ServiceCollection](https://user-images.githubusercontent.com/55300546/136687172-386f7e31-6443-4ad5-8609-a9164832cea9.PNG)
 
 
-**Last one you should use OnlyServiceable attribute your controllers**
+**Finally you should use OnlyServiceable attribute your controllers**
 
 **Example**<br>
 ![attribute](https://user-images.githubusercontent.com/55300546/136688278-acbe01e5-ea5a-41d3-b4df-9e8b38476945.PNG)
