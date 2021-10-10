@@ -32,3 +32,5 @@
 
 ## API.Manager Services ##
 
+![API.ManagerServices](https://user-images.githubusercontent.com/55300546/136690340-1571593f-ab31-49f2-afe9-9f2f996b4355.PNG)
+
