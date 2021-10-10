@@ -2,7 +2,7 @@
 using API.Manager.Core.Models;
 using API.Manager.Infrastracture;
 using API.Manager.Options;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,21 +25,6 @@ namespace API.Manager.Core
             _preparatoryRepository = preparatoryRepository;
             _channelRepository = channelRepository;
             _serviceRepository = serviceRepository;
-        }
-
-        private bool GetCustomAttributePredicate(CustomAttributeData data)
-        {
-            IList<Type> attributeTypes = new List<Type>();
-
-            attributeTypes.Add(typeof(HttpGetAttribute));
-            attributeTypes.Add(typeof(HttpPostAttribute));
-            attributeTypes.Add(typeof(HttpPutAttribute));
-            attributeTypes.Add(typeof(HttpDeleteAttribute));
-
-            if (attributeTypes.Contains(data.AttributeType))
-                return true;
-            else
-                return false;
         }
 
         private Task<IList<string>> GetExistChannels(CancellationToken cancellationToken = default)
@@ -109,7 +94,7 @@ namespace API.Manager.Core
             {
                 foreach (var controller in controllers)
                 {
-                    var methods = controller.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(method => method.CustomAttributes.Any(attribute => GetCustomAttributePredicate(attribute)));
+                    var methods = controller.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(method => method.CustomAttributes.Any(attribute => attribute.AttributeType.BaseType == typeof(HttpMethodAttribute)));
 
                     foreach (var method in methods)
                     {
@@ -119,7 +104,7 @@ namespace API.Manager.Core
 
                         if (method.CustomAttributes != null && method.CustomAttributes.Any())
                         {
-                            var attributes = method.CustomAttributes.FirstOrDefault(attribute => GetCustomAttributePredicate(attribute));
+                            var attributes = method.CustomAttributes.FirstOrDefault(attribute => attribute.AttributeType.BaseType == typeof(HttpMethodAttribute));
 
                             if (attributes != null)
                             {
