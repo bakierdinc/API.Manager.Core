@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace API.Manager.Attribute
 {
-    [AttributeUsage(AttributeTargets.All)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class OnlyServiceableAttribute : ActionFilterAttribute
     {
         public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
