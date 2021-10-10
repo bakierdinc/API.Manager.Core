@@ -6,7 +6,7 @@
 
 Firstly you should add ApiManagerOptions to configuration file.
 
-Example
+**Example**
 ![options](https://user-images.githubusercontent.com/55300546/136687127-33800fc4-1313-4907-9501-36c0e7a8b5d0.PNG)
 
 **ApiManagerOptions fields meaning;**
@@ -21,7 +21,7 @@ Example
 
 Secondly you should add to Service Collection
 
-Example
+**Example**
 ![ServiceCollection](https://user-images.githubusercontent.com/55300546/136687172-386f7e31-6443-4ad5-8609-a9164832cea9.PNG)
 
 Done...
