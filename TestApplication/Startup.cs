@@ -6,13 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
 
 namespace TestApplication
 {
     public class Startup
     {
-        private IServiceProvider _serviceProvider;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,7 +32,8 @@ namespace TestApplication
             AddApiManager(services);
            
         }
-        public void AddApiManager(IServiceCollection services)
+
+        private void AddApiManager(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("ApiManager");
 
@@ -62,8 +61,6 @@ namespace TestApplication
             {
                 endpoints.MapControllers();
             });
-
-            _serviceProvider = app.ApplicationServices;
         }
     }
 }
