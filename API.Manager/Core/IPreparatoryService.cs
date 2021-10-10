@@ -6,6 +6,6 @@ namespace API.Manager.Core
     public interface IPreparatoryService
     {
         Task PrepareServiceTablesAsync(CancellationToken cancellationToken = default);
-        Task PrepareServiceData(CancellationToken cancellationToken=default);
+        Task PrepareServiceDataAsync(CancellationToken cancellationToken=default);
     }
 }

@@ -39,7 +39,7 @@ namespace API.Manager.Extensions
             try
             {
                 preparatoryService.PrepareServiceTablesAsync(default);
-                preparatoryService.PrepareServiceData(default);
+                preparatoryService.PrepareServiceDataAsync(default);
             }
             catch (Exception)
             {

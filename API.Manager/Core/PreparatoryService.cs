@@ -133,7 +133,7 @@ namespace API.Manager.Core
             return await FromResult<IList<Service>>(services);
         }
 
-        public async Task PrepareServiceData(CancellationToken cancellationToken = default)
+        public async Task PrepareServiceDataAsync(CancellationToken cancellationToken = default)
         {
             Assembly assembly = Assembly.GetEntryAssembly();
             var controllerTypes = assembly.GetTypes().Where(type => type.CustomAttributes.Any(c => c.AttributeType == typeof(OnlyServiceableAttribute)));
