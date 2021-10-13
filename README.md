@@ -15,7 +15,7 @@
 - CreateTablesIfNeccassary : When the CreateTablesIfNeccassary value is true, the application creates a table in the database if available, otherwise application will not create table in the database.
 - HeaderKey : Requests must have a header value to be distinguishable.
 - Channels : Allows to manage the availability of services for multiple platforms.
-- IsServiceable : Specifies the default availability of services.
+- IsServiceable : Specifies the default availability of services. Default value will be true when IsServiceable field is null.
 - NotAcceptableMessage : If services are not available, 406 status code is returned and indicates the content message.
 
 
