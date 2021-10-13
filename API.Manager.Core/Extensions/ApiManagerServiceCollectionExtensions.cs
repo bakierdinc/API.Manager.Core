@@ -1,5 +1,4 @@
-﻿using API.Manager.Core;
-using API.Manager.Core.Infrastracture;
+﻿using API.Manager.Core.Infrastracture;
 using API.Manager.Core.Options;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,8 +9,9 @@ namespace API.Manager.Core.Extensions
 {
     public static class ApiManagerServiceCollectionExtensions
     {
-        private const string DefaultSchema = "ApiManager";
+        private const string DefaultSchemaKey = "ApiManager";
         private const string DefaultHeaderKey = "Channel";
+        private static string[] DefaultChannel = { "Default" };
 
         private static void ValidateOptions(ApiManagerOptions options)
         {
@@ -19,10 +19,13 @@ namespace API.Manager.Core.Extensions
                 throw new ArgumentNullException(nameof(options));
 
             if (options.Channels is null || options.Channels.Length <= 0)
-                throw new ArgumentNullException(nameof(options.Channels));
+                options.Channels = DefaultChannel;
 
             if (string.IsNullOrWhiteSpace(options.Schema))
-                options.Schema = DefaultSchema;
+                options.Schema = DefaultSchemaKey;
+
+            if (!options.IsServiceable.HasValue)
+                options.IsServiceable = true;
 
             if (!options.CreateTableIfNeccassary.HasValue)
                 options.CreateTableIfNeccassary = true;

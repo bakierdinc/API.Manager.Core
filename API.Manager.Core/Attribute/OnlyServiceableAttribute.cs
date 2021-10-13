@@ -1,5 +1,4 @@
-﻿using API.Manager.Core;
-using API.Manager.Core.Models;
+﻿using API.Manager.Core.Models;
 using API.Manager.Core.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

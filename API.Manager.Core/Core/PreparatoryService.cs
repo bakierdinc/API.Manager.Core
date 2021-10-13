@@ -1,6 +1,6 @@
 ﻿using API.Manager.Core.Attribute;
-using API.Manager.Core.Models;
 using API.Manager.Core.Infrastracture;
+using API.Manager.Core.Models;
 using API.Manager.Core.Options;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System;
@@ -35,17 +35,13 @@ namespace API.Manager.Core
         private async Task AddChannelsIfNotExist(IList<string> existChannels, CancellationToken cancellationToken = default)
         {
             var newChannels = _options.Channels.Where(channel => !existChannels.Contains(channel));
-
-            foreach (var channel in newChannels)
-                await _channelRepository.AddAsync(channel, cancellationToken);
+            await _channelRepository.AddAsync(newChannels, cancellationToken);
         }
 
         private async Task DeleteDifferentChannelsAndRelations(IList<string> existChannels, CancellationToken cancellationToken = default)
         {
             var differenceList = existChannels.Where(channel => !_options.Channels.Contains(channel));
-
-            foreach (var differentChannel in differenceList)
-                await _channelRepository.DeleteAsync(differentChannel, cancellationToken);
+            await _channelRepository.DeleteAsync(differenceList, cancellationToken);
         }
 
         private async Task ClearDeletedServicesFromDb(IList<Service> existServices, IList<Service> services, CancellationToken cancellationToken = default)
@@ -109,7 +105,7 @@ namespace API.Manager.Core
                             if (attributes != null)
                             {
                                 service.MethodType = attributes.AttributeType.Name.Replace("Attribute", string.Empty).Replace("Http", string.Empty).Trim().ToUpper();
-                                service.IsServiceable = _options.IsServiceable;
+                                service.IsServiceable = _options.IsServiceable.GetValueOrDefault();
                                 service.Channel = _options.Channels[i];
 
                                 if (attributes.ConstructorArguments != null && attributes.ConstructorArguments.Count > 0)

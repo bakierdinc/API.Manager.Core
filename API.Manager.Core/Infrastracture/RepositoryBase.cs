@@ -50,6 +50,22 @@ namespace API.Manager.Core.Infrastracture
            return command;
         }
 
+        protected virtual IDbCommand CreateCommand(string query, CommandType commandType, CommandParameter parameter)
+        {
+            var command = _dbConnection.CreateCommand();
+            command.CommandText = query;
+
+            var dataParameter = command.CreateParameter();
+
+            dataParameter.Value = parameter.Value;
+            dataParameter.DbType = parameter.Type;
+            dataParameter.ParameterName = parameter.Name;
+
+            command.Parameters.Add(dataParameter);
+
+            return command;
+        }
+
         public virtual async Task<DataTable> CreateDataTableVersion<T>(IList<T> data, CancellationToken cancellationToken = default)
         {
             PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
@@ -72,6 +88,20 @@ namespace API.Manager.Core.Infrastracture
                 }
                 table.Rows.Add(values);
             }
+
+            return await FromResult(table);
+        }
+
+        public virtual async Task<DataTable> CreateDataTableVersion(IEnumerable<string> data, string columnName, CancellationToken cancellationToken = default)
+        {
+            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(string));
+
+            DataTable table = new DataTable();
+
+            table.Columns.Add(columnName);
+
+            foreach (var item in data)
+                table.Rows.Add(item);
 
             return await FromResult(table);
         }

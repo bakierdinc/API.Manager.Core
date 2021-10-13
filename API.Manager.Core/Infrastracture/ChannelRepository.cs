@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,71 +50,69 @@ namespace API.Manager.Core.Infrastracture
             return await FromResult(channels);
         }
 
-        public async Task AddAsync(string channel, CancellationToken cancellationToken = default)
-        {
-            string query = string.Format("INSERT INTO {0}.Channel (Channel) VALUES(@channel)", _options.Schema);
-
-            IList<CommandParameter> parameters = new List<CommandParameter>();
-
-            parameters.Add(CreateCommandParameter(string.Concat("@", nameof(channel)), channel, DbType.String));
-
-            var command = CreateCommand(query, CommandType.Text, parameters);
-
-            try
-            {
-                _dbConnection.Open();
-                command.Transaction = _dbConnection.BeginTransaction();
-                command.ExecuteNonQuery();
-                command.Transaction.Commit();
-
-            }
-            catch (Exception ex)
-            {
-                command.Transaction.Rollback();
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
-                _dbConnection.Close();
-            }
-
-            await FromResult(Task.CompletedTask);
-        }
-
-        public async Task DeleteAsync(string channel, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(IEnumerable<string> channels, CancellationToken cancellationToken = default)
         {
             string serviceQuery = string.Format("DELETE {0}.Service  WHERE Channel=@channel", _options.Schema);
             string channelQuery = string.Format("DELETE {0}.Channel  WHERE Channel=@channel", _options.Schema);
 
             IList<CommandParameter> parameters = new List<CommandParameter>();
 
-            parameters.Add(CreateCommandParameter(string.Concat("@", nameof(channel)), channel, DbType.String));
+            foreach (var channel in channels)
+            {
+                var command = CreateCommand(serviceQuery, CommandType.Text, CreateCommandParameter("@channel", channel, DbType.String));
 
-            var command = CreateCommand(serviceQuery, CommandType.Text, parameters);
+                try
+                {
+                    _dbConnection.Open();
+                    command.Transaction = _dbConnection.BeginTransaction();
+                    command.ExecuteNonQuery();
+                    command.Transaction.Commit();
 
+                    command = CreateCommand(channelQuery, CommandType.Text, CreateCommandParameter("@channel", channel, DbType.String));
+                    command.Transaction = _dbConnection.BeginTransaction();
+                    command.ExecuteNonQuery();
+                    command.Transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    command.Transaction.Rollback();
+                    throw new Exception(ex.Message);
+                }
+                finally
+                {
+                    _dbConnection.Close();
+                }
+            }
+
+            await FromResult(Task.CompletedTask);
+        }
+
+        public async Task AddAsync(IEnumerable<string> channel, CancellationToken cancellationToken = default)
+        {
+            IList<DataTable> dataTables = new List<DataTable>();
+
+            var dataTable = await CreateDataTableVersion(channel, "Channel");
+
+            _dbConnection.Open();
+            var transaction = _dbConnection.BeginTransaction();
             try
             {
-                _dbConnection.Open();
-                command.Transaction = _dbConnection.BeginTransaction();
-                command.ExecuteNonQuery();
-                command.Transaction.Commit();
-
-                command = CreateCommand(channelQuery, CommandType.Text, parameters);
-                command.Transaction = _dbConnection.BeginTransaction();
-                command.ExecuteNonQuery();
-                command.Transaction.Commit();
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_dbConnection.ConnectionString))
+                {
+                    bulkCopy.DestinationTableName = string.Format("{0}.Channel", _options.Schema);
+                    await bulkCopy.WriteToServerAsync(dataTable, cancellationToken);
+                    transaction.Commit();
+                }
             }
             catch (Exception ex)
             {
-                command.Transaction.Rollback();
+                transaction.Rollback();
                 throw new Exception(ex.Message);
             }
             finally
             {
                 _dbConnection.Close();
             }
-
-            await FromResult(Task.CompletedTask);
         }
     }
 }
