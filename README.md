@@ -1,5 +1,5 @@
-# API.Manager
-### Api Manager for manage availability of REST services.
+# API.Manager.Core
+### API.Manager.Core for manage availability of REST services.
 
 
 ## Implementation
