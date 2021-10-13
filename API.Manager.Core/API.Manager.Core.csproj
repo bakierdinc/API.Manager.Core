@@ -5,8 +5,8 @@
     <Authors>Baki Erdinç</Authors>
     <Company>BEE</Company>
     <Description>API.Manager for manage availability of REST services.</Description>
-    <PackageProjectUrl>https://github.com/bakierdinc/API.Manager</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/bakierdinc/API.Manager</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/bakierdinc/API.Manager.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bakierdinc/API.Manager.Core</RepositoryUrl>
     <PackageTags>API.Manager for manage availability of REST services.</PackageTags>
     <PackageReleaseNotes>API.Manager for manage availability of REST services.</PackageReleaseNotes>
   </PropertyGroup>
