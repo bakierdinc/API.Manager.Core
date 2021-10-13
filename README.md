@@ -30,7 +30,7 @@
 **Example**<br>
 ![attribute](https://user-images.githubusercontent.com/55300546/136688278-acbe01e5-ea5a-41d3-b4df-9e8b38476945.PNG)
 
-## API.Manager Services ##
+## API.Manager.Core Services ##
 
 ![API.ManagerServices](https://user-images.githubusercontent.com/55300546/136690340-1571593f-ab31-49f2-afe9-9f2f996b4355.PNG)
 
