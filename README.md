@@ -11,9 +11,9 @@
 
 **ApiManagerOptions fields meaning;**
 
-- Schema : Schema name of the tables to be created your database.
-- CreateTablesIfNeccassary : When the CreateTablesIfNeccassary value is true, the application creates a table in the database if available, otherwise application will not create table in the database.
-- HeaderKey : Requests must have a header value to be distinguishable.
+- Schema : Schema name of the tables to be created your database. Default value will be "ApiManager" when Schema field was null.
+- CreateTablesIfNeccassary : When the CreateTablesIfNeccassary value is true, the application creates a table in the database if available, otherwise application will not create table in the database. Default value will be true when CreateTablesIfNeccassary field was null.
+- HeaderKey : Requests must have a header value to be distinguishable. Default value will be "Channel" when HeaderKey field was null.
 - Channels : Allows to manage the availability of services for multiple platforms. Default value will be "Default" when Channels field was null.
 - IsServiceable : Specifies the default availability of services. Default value will be true when IsServiceable field was null.
 - NotAcceptableMessage : If services are not available, 406 status code is returned and indicates the content message.
