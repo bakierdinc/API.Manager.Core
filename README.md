@@ -12,7 +12,7 @@
 **ApiManagerOptions fields meaning;**
 
 - Schema : Schema name of the tables to be created your database.
-- CreateTablesIfNeccassary : If the CreateTablesIfNeccassary value is true, the application creates a table in the database while standing up. If the CreateTablesIfNeccassary value is false, the application will not create table in the database. 
+- CreateTablesIfNeccassary : When the CreateTablesIfNeccassary value is true, the application creates a table in the database if available, otherwise application will not create table in the database.
 - HeaderKey : Requests must have a header value to be distinguishable.
 - Channels : Allows to manage the availability of services for multiple platforms.
 - IsServiceable : Specifies the default availability of services.
