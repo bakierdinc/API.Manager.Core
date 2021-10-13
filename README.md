@@ -7,7 +7,7 @@
 **Firstly you should add ApiManagerOptions to configuration file.**
 
 **Example**<br>
-![options](https://user-images.githubusercontent.com/55300546/136687127-33800fc4-1313-4907-9501-36c0e7a8b5d0.PNG)
+![options](https://user-images.githubusercontent.com/55300546/137203490-1257c39a-7cd3-4b61-a632-0dc478b0d73f.PNG)
 
 **ApiManagerOptions fields meaning;**
 
