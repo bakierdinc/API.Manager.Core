@@ -64,6 +64,7 @@ namespace API.Manager.Core
         public async Task UpdateServiceStatusByIdAsync(int id, bool isServiceable, CancellationToken cancellationToken = default)
         {
             await _serviceRepository.UpdateServiceStatusByIdAsync(id, isServiceable, cancellationToken);
+            _memoryCache.Remove(CacheKey);
         }
 
         public async Task<bool> IsServiceable(Service service, CancellationToken cancellationToken = default)
