@@ -62,7 +62,7 @@ namespace API.Manager.Core.Extensions
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IPreparatoryService, PreparatoryService>();
             services.AddScoped<IPreparatoryRepository, PreparatoryRepository>();
-
+            services.AddMemoryCache();
             return services;
         }
     }
