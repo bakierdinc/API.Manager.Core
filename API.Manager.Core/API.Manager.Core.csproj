@@ -8,9 +8,10 @@
     <PackageProjectUrl>https://github.com/bakierdinc/API.Manager.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bakierdinc/API.Manager.Core</RepositoryUrl>
     <PackageTags>API.Manager for manage availability of REST services.</PackageTags>
-    <PackageReleaseNotes>API.Manager for manage availability of REST services.</PackageReleaseNotes>
-    <PackageIcon>627558.png</PackageIcon>
+    <PackageReleaseNotes>-Added MemoryCache</PackageReleaseNotes>
+    <PackageIcon>logo.png</PackageIcon>
     <PackageIconUrl />
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="C:\Users\bakie\Desktop\627558.png">
+    <None Include="logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

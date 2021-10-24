@@ -4225,7 +4225,7 @@
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "restore": {
       "projectUniqueName": "D:\\Workspace\\API.Manager.Core\\API.Manager.Core\\API.Manager.Core.csproj",
       "projectName": "API.Manager.Core",
