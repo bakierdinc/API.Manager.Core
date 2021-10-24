@@ -1,6 +1,9 @@
-﻿using API.Manager.Core.Models;
-using API.Manager.Core.Infrastracture;
+﻿using API.Manager.Core.Infrastracture;
+using API.Manager.Core.Models;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,11 +11,17 @@ namespace API.Manager.Core
 {
     public class ManagerService : ServiceBase, IManagerService
     {
+        private const string CacheKey = "Methods";
+        private TimeSpan SlidingTime = new TimeSpan(0, 30, 0);
+
+
+        private readonly IMemoryCache _memoryCache;
         private readonly IChannelRepository _channelRepository;
         private readonly IServiceRepository _serviceRepository;
 
-        public ManagerService(IChannelRepository channelRepository, IServiceRepository serviceRepository)
+        public ManagerService(IChannelRepository channelRepository, IServiceRepository serviceRepository, IMemoryCache memoryCache)
         {
+            _memoryCache = memoryCache;
             _channelRepository = channelRepository;
             _serviceRepository = serviceRepository;
         }
@@ -59,6 +68,23 @@ namespace API.Manager.Core
 
         public async Task<bool> IsServiceable(Service service, CancellationToken cancellationToken = default)
         {
+            if (_memoryCache.TryGetValue(CacheKey, out IList<Service> services))
+            {
+                var matchedService = services.FirstOrDefault(c =>
+                 c.Channel == service.Channel &&
+                 c.Project == service.Project &&
+                 c.Controller == service.Controller &&
+                 c.Method == service.Method &&
+                 c.MethodType == service.MethodType);
+
+                return matchedService.IsServiceable;
+            }
+            else
+            {
+                services = await _serviceRepository.GetAllAsync(cancellationToken);
+                _memoryCache.Set(CacheKey, services, new MemoryCacheEntryOptions() { SlidingExpiration = SlidingTime });
+            }
+
             return await _serviceRepository.IsServiceableAsync(service, cancellationToken);
         }
     }
