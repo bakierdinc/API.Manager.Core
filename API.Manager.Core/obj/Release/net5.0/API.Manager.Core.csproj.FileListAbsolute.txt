@@ -11,4 +11,3 @@ D:\Workspace\API.Manager.Core\API.Manager.Core\obj\Release\net5.0\API.Manager.Co
 D:\Workspace\API.Manager.Core\API.Manager.Core\obj\Release\net5.0\API.Manager.Core.dll
 D:\Workspace\API.Manager.Core\API.Manager.Core\obj\Release\net5.0\ref\API.Manager.Core.dll
 D:\Workspace\API.Manager.Core\API.Manager.Core\obj\Release\net5.0\API.Manager.Core.pdb
-D:\Workspace\API.Manager.Core\API.Manager.Core\obj\Release\net5.0\API.Manager.Core.csproj.AssemblyReference.cache
