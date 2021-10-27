@@ -7,11 +7,11 @@ using System.Data.SqlClient;
 
 namespace API.Manager.Core.Extensions
 {
-    public static class ApiManagerServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         private const string DefaultSchemaKey = "ApiManager";
         private const string DefaultHeaderKey = "Channel";
-        private static string[] DefaultChannel = { "Default" };
+        private static string[] DefaultChannels = { "Default" };
 
         private static void ValidateOptions(ApiManagerOptions options)
         {
@@ -19,7 +19,7 @@ namespace API.Manager.Core.Extensions
                 throw new ArgumentNullException(nameof(options));
 
             if (options.Channels is null || options.Channels.Length <= 0)
-                options.Channels = DefaultChannel;
+                options.Channels = DefaultChannels;
 
             if (string.IsNullOrWhiteSpace(options.Schema))
                 options.Schema = DefaultSchemaKey;
@@ -33,6 +33,32 @@ namespace API.Manager.Core.Extensions
             if (string.IsNullOrWhiteSpace(options.HeaderKey))
                 options.HeaderKey = DefaultHeaderKey;
         }
+        
+        private static IServiceCollection AddOptions(this IServiceCollection services, ApiManagerOptions options)
+        {
+            services.AddSingleton(options);
+            return services;
+        }
+
+        private static IServiceCollection AddDbConnection(this IServiceCollection services, string connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new ArgumentNullException(nameof(connectionString));
+
+            services.AddSingleton<IDbConnection>(db => new SqlConnection(connectionString));
+
+            return services;
+        }
+        private static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IChannelRepository, ChannelRepository>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IPreparatoryService, PreparatoryService>();
+            services.AddScoped<IPreparatoryRepository, PreparatoryRepository>();
+
+            return services;
+        }
 
         public static void PrepareApiManager(this IServiceCollection services)
         {
@@ -44,9 +70,9 @@ namespace API.Manager.Core.Extensions
                 preparatoryService.PrepareServiceTablesAsync(default);
                 preparatoryService.PrepareServiceDataAsync(default);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message, e.InnerException);
             }
 
         }
@@ -55,14 +81,11 @@ namespace API.Manager.Core.Extensions
         {
             ValidateOptions(options);
 
-            services.AddSingleton(options);
-            services.AddTransient<IDbConnection>(db => new SqlConnection(connectionString));
-            services.AddScoped<IManagerService, ManagerService>();
-            services.AddScoped<IChannelRepository, ChannelRepository>();
-            services.AddScoped<IServiceRepository, ServiceRepository>();
-            services.AddScoped<IPreparatoryService, PreparatoryService>();
-            services.AddScoped<IPreparatoryRepository, PreparatoryRepository>();
+            services.AddOptions(options);
+            services.AddDbConnection(connectionString);
+            services.AddServices();
             services.AddMemoryCache();
+
             return services;
         }
     }

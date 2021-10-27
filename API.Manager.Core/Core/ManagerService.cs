@@ -13,7 +13,7 @@ namespace API.Manager.Core
     {
         private const string CacheKey = "Methods";
         private TimeSpan SlidingTime = new TimeSpan(0, 30, 0);
-
+        private static readonly Semaphore _locker = new Semaphore(1, 1);
 
         private readonly IMemoryCache _memoryCache;
         private readonly IChannelRepository _channelRepository;
@@ -24,6 +24,24 @@ namespace API.Manager.Core
             _memoryCache = memoryCache;
             _channelRepository = channelRepository;
             _serviceRepository = serviceRepository;
+        }
+
+        private async Task<bool> GetIsServiceableInfoAsync(IList<Service> services, Service service, CancellationToken cancellationToken = default)
+        {
+            var matchedService = services.FirstOrDefault(c =>
+             c.Channel == service.Channel &&
+             c.Project == service.Project &&
+             c.Controller == service.Controller &&
+             c.Method == service.Method &&
+             c.MethodType == service.MethodType);
+
+            return await FromResult(matchedService.IsServiceable);
+        }
+
+        private async Task<IList<Service>> GetServicesFromCacheAsync(Service service, CancellationToken cancellationToken = default)
+        {
+            var data = _memoryCache.Get<IList<Service>>(CacheKey);
+            return await FromResult(data);
         }
 
         public async Task<IList<string>> GetChannelsAsync(CancellationToken cancellationToken = default)
@@ -69,21 +87,32 @@ namespace API.Manager.Core
 
         public async Task<bool> IsServiceable(Service service, CancellationToken cancellationToken = default)
         {
-            if (_memoryCache.TryGetValue(CacheKey, out IList<Service> services))
-            {
-                var matchedService = services.FirstOrDefault(c =>
-                 c.Channel == service.Channel &&
-                 c.Project == service.Project &&
-                 c.Controller == service.Controller &&
-                 c.Method == service.Method &&
-                 c.MethodType == service.MethodType);
+            var data = await GetServicesFromCacheAsync(service, cancellationToken);
 
-                return matchedService.IsServiceable;
-            }
-            else
+            if (data is not null || data.Any())
+                return await GetIsServiceableInfoAsync(data, service, cancellationToken);
+
+            _locker.WaitOne();
+            try
             {
-                services = await _serviceRepository.GetAllAsync(cancellationToken);
-                _memoryCache.Set(CacheKey, services, new MemoryCacheEntryOptions() { SlidingExpiration = SlidingTime });
+                if (data is not null || data.Any())
+                    return await GetIsServiceableInfoAsync(data, service, cancellationToken);
+
+                data = await _serviceRepository.GetAllAsync(cancellationToken);
+
+                if (data is not null || data.Any())
+                {
+                    _memoryCache.Set(CacheKey, data, new MemoryCacheEntryOptions() { SlidingExpiration = SlidingTime });
+                    return await GetIsServiceableInfoAsync(data, service, cancellationToken);
+                }
+            }
+            catch
+            {
+                //ignored
+            }
+            finally
+            {
+                _locker.Release();
             }
 
             return await _serviceRepository.IsServiceableAsync(service, cancellationToken);
