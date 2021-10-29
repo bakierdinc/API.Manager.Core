@@ -24,7 +24,7 @@ namespace API.Manager.Core.Attribute
             if (managerService is not null)
             {
                 var serviceArgs = PrepareServiceArgs(context);
-                isServiceable = managerService.IsServiceable(serviceArgs).Result;
+                isServiceable = managerService.IsServiceable(serviceArgs);
             }
 
             if (!isServiceable)

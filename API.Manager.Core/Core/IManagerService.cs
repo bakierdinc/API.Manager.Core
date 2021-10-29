@@ -15,6 +15,6 @@ namespace API.Manager.Core
         Task UpdateServiceStatusByProject(string project, bool isServiceable, CancellationToken cancellationToken = default);
         Task UpdateServiceStatusByController(string controller, bool isServiceable, CancellationToken cancellationToken = default);
         Task UpdateServiceStatusByIdAsync(int id, bool isServiceable, CancellationToken cancellation);
-        Task<bool> IsServiceable(Service service, CancellationToken cancellationToken = default);
+        bool IsServiceable(Service service);
     }
 }

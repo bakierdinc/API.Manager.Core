@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "API.Manager.Core/1.0.0": {
+      "API.Manager.Core/1.1.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "Microsoft.Extensions.Caching.Abstractions": "5.0.0",
@@ -834,7 +834,7 @@
     }
   },
   "libraries": {
-    "API.Manager.Core/1.0.0": {
+    "API.Manager.Core/1.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

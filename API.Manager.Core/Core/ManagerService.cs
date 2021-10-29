@@ -26,7 +26,7 @@ namespace API.Manager.Core
             _serviceRepository = serviceRepository;
         }
 
-        private async Task<bool> GetIsServiceableInfoAsync(IList<Service> services, Service service, CancellationToken cancellationToken = default)
+        private bool GetIsServiceableInfo(IList<Service> services, Service service)
         {
             var matchedService = services.FirstOrDefault(c =>
              c.Channel == service.Channel &&
@@ -35,13 +35,15 @@ namespace API.Manager.Core
              c.Method == service.Method &&
              c.MethodType == service.MethodType);
 
-            return await FromResult(matchedService.IsServiceable);
+            if (matchedService is not null)
+                return matchedService.IsServiceable;
+            else
+                return _serviceRepository.IsServiceableAsync(service, default).Result;
         }
 
-        private async Task<IList<Service>> GetServicesFromCacheAsync(Service service, CancellationToken cancellationToken = default)
+        private IList<Service> GetServicesFromCache(Service service)
         {
-            var data = _memoryCache.Get<IList<Service>>(CacheKey);
-            return await FromResult(data);
+            return _memoryCache.Get<IList<Service>>(CacheKey);
         }
 
         public async Task<IList<string>> GetChannelsAsync(CancellationToken cancellationToken = default)
@@ -85,25 +87,25 @@ namespace API.Manager.Core
             _memoryCache.Remove(CacheKey);
         }
 
-        public async Task<bool> IsServiceable(Service service, CancellationToken cancellationToken = default)
+        public bool IsServiceable(Service service)
         {
-            var data = await GetServicesFromCacheAsync(service, cancellationToken);
+            var data = GetServicesFromCache(service);
 
-            if (data is not null || data.Any())
-                return await GetIsServiceableInfoAsync(data, service, cancellationToken);
+            if (data is not null && data.Any())
+                return GetIsServiceableInfo(data, service);
 
             _locker.WaitOne();
             try
             {
-                if (data is not null || data.Any())
-                    return await GetIsServiceableInfoAsync(data, service, cancellationToken);
+                if (data is not null && data.Any())
+                    return GetIsServiceableInfo(data, service);
 
-                data = await _serviceRepository.GetAllAsync(cancellationToken);
+                data = _serviceRepository.GetAllAsync(default).Result;
 
-                if (data is not null || data.Any())
+                if (data is not null && data.Any())
                 {
                     _memoryCache.Set(CacheKey, data, new MemoryCacheEntryOptions() { SlidingExpiration = SlidingTime });
-                    return await GetIsServiceableInfoAsync(data, service, cancellationToken);
+                    return GetIsServiceableInfo(data, service);
                 }
             }
             catch
@@ -115,7 +117,7 @@ namespace API.Manager.Core
                 _locker.Release();
             }
 
-            return await _serviceRepository.IsServiceableAsync(service, cancellationToken);
+            return _serviceRepository.IsServiceableAsync(service, default).Result;
         }
     }
 }
