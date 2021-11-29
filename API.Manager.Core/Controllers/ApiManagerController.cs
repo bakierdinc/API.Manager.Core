@@ -1,5 +1,4 @@
-﻿using API.Manager.Core;
-using API.Manager.Core.Models.Responses;
+﻿using API.Manager.Core.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -65,7 +64,7 @@ namespace API.Manager.Core.Controllers
             return Ok(result);
         }
 
-        [HttpGet("projects/controllers/methods/{controllerName}")]
+        [HttpGet("projects/controllers/{controllerName}/methods")]
         [ProducesResponseType(typeof(IList<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
