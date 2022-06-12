@@ -49,7 +49,7 @@ namespace API.Manager.Core.Controllers
             return Ok(result);
         }
 
-        [HttpGet("projects/controllers/{projectName}")]
+        [HttpGet("projects/{projectName}/controllers")]
         [ProducesResponseType(typeof(IList<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
